@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+Series
+======
+
 This plugin extends the original series plugin
 by FELD Boris <lothiraldan@gmail.com>
-
-Copyright (c) Leonardo Giordani <giordani.leonardo@gmail.com>
 
 Joins articles in a series and provides variables to
 manage the series in the template.
@@ -22,42 +23,34 @@ def aggregate_series(generator):
     # and collects the 'series' metadata, if present.
     # The 'series_index' metadata is also stored, if specified
     for article in generator.articles:
+
         if "series" in article.metadata:
-            article_entry = (
-                article.metadata.get("series_index", None),
-                article.metadata["date"],
-                article,
-            )
+            article_entry = {
+                "index": article.metadata.get("series_index", None),
+                "date": article.metadata["date"],
+                "content": article,
+            }
 
             series[article.metadata["series"]].append(article_entry)
 
-    # This uses items() which on Python2 is not a generator
-    # but we are dealing with a small amount of data so
-    # there shouldn't be performance issues =)
     for series_name, series_articles in series.items():
-        # This is not DRY but very simple to understand
-        forced_order_articles = [
-            art_tup for art_tup in series_articles if art_tup[0] is not None
-        ]
+        forced_order_articles = [i for i in series_articles if i["index"] is not None]
+        forced_order_articles.sort(key=itemgetter("index"))
 
-        date_order_articles = [
-            art_tup for art_tup in series_articles if art_tup[0] is None
-        ]
-
-        forced_order_articles.sort(key=itemgetter(0))
-        date_order_articles.sort(key=itemgetter(1))
+        date_order_articles = [i for i in series_articles if i["index"] is None]
+        date_order_articles.sort(key=itemgetter("date"))
 
         all_articles = forced_order_articles + date_order_articles
-        ordered_articles = [art_tup[2] for art_tup in all_articles]
-        enumerated_articles = enumerate(ordered_articles)
+        ordered_articles = [i["content"] for i in all_articles]
 
-        for index, article in enumerated_articles:
-            article.series = dict()
-            article.series["name"] = series_name
-            article.series["index"] = index + 1
-            article.series["all"] = ordered_articles
-            article.series["all_previous"] = ordered_articles[0:index]
-            article.series["all_next"] = ordered_articles[index + 1 :]
+        for index, article in enumerate(ordered_articles):
+            article.series = {
+                "name": series_name,
+                "index": index + 1,
+                "all": ordered_articles,
+                "all_previous": ordered_articles[0:index],
+                "all_next": ordered_articles[index + 1 :],
+            }
 
             if index > 0:
                 article.series["previous"] = ordered_articles[index - 1]
