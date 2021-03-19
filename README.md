@@ -1,7 +1,9 @@
 Series: A Plugin for Pelican
 ============================
 
-[![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/series/build)](https://github.com/pelican-plugins/series/actions) [![PyPI Version](https://img.shields.io/pypi/v/pelican-series)](https://pypi.org/project/pelican-series/)
+[![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/series/build)](https://github.com/pelican-plugins/series/actions)
+[![PyPI Version](https://img.shields.io/pypi/v/pelican-series)](https://pypi.org/project/pelican-series/)
+![License](https://img.shields.io/pypi/l/pelican-series?color=blue)
 
 Series is a Pelican plugin that joins multiple posts into a series.
 
@@ -66,3 +68,8 @@ To start contributing to this plugin, review the [Contributing to Pelican][] doc
 
 [existing issues]: https://github.com/pelican-plugins/series/issues
 [Contributing to Pelican]: https://docs.getpelican.com/en/latest/contribute.html
+
+License
+-------
+
+This project is licensed under the AGPL 3.0 license.
