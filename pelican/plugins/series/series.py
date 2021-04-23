@@ -16,6 +16,8 @@ from pelican import signals
 
 
 def aggregate_series(generator):
+    generator.context["series"] = {}
+
     series = defaultdict(list)
 
     # This cycles through all articles in the given generator
@@ -60,6 +62,8 @@ def aggregate_series(generator):
                 article.series["next"] = ordered_articles[index + 1]
             except IndexError:
                 article.series["next"] = None
+
+        generator.context["series"][series_name] = ordered_articles
 
 
 def register():
