@@ -5,7 +5,7 @@ Series: A Plugin for Pelican
 [![PyPI Version](https://img.shields.io/pypi/v/pelican-series)](https://pypi.org/project/pelican-series/)
 ![License](https://img.shields.io/pypi/l/pelican-series?color=blue)
 
-Series is a Pelican plugin that joins multiple posts into a series.
+Series is a Pelican plugin that joins multiple posts into a series. Globally, it provides a list of all the series, and for each article it provides a list of all articles in the same series and links to the next and previous articles in the series.
 
 Installation
 ------------
@@ -32,7 +32,7 @@ Indexing
 
 By default, articles in a series are ordered by date and then automatically numbered.
 
-If you want to force a given order, specify the `:series_index:` (reST) or `series_index:` (Markdown) metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered by date.
+If you want to force a given order, specify `:series_index:` (reST) or `series_index:` (Markdown) in the article metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered by date.
 
 The plugin provides the following variables to your templates:
 
@@ -41,12 +41,12 @@ The plugin provides the following variables to your templates:
 * `article.series.all` is an ordered list of all articles in the series (including the current one)
 * `article.series.all_previous` is an ordered list of the articles published before the current one
 * `article.series.all_next` is an ordered list of the articles published after the current one
-* `article.series.previous` is the previous article in the series (a shortcut to `article.series.all_previous[-1]`)
-* `article.series.next` is the next article in the series (a shortcut to `article.series.all_next[0]`)
+* `article.series.previous` is the previous article in the series (a shortcut to `article.series.all_previous[-1]`) or `None` for the first article
+* `article.series.next` is the next article in the series (a shortcut to `article.series.all_next[0]`) or `None` for the last one
 
 For example:
 
-```jinja
+```html+jinja
 {% if article.series %}
     <p>This post is part {{ article.series.index }} of the "{{ article.series.name }}" series:</p>
     <ol class="parts">
@@ -57,6 +57,28 @@ For example:
         {% endfor %}
     </ol>
 {% endif %}
+```
+
+Global Context
+--------------
+
+The plugin also adds the key `series` to the global context, which is a dictionary of all series names (as keys) and articles (as values). You can use that to list all the series of articles in your site, for example
+
+```html+jinja
+{% for series_name, series_articles in series.items() %}
+{% set article = series_articles[0] %}
+<article class="card">
+	<a href="{{ article.url }}" class="image">
+		<img src="/images/{{ article.image }}.jpg" alt="{{ article.image }}" />
+	</a>
+	<div class="card-body">
+    	<a href="{{ article.url }}"><h3 class="card-title">{{ series_name }}</h3></a>
+     	<ul class="actions">
+     		<li><a href="{{ article.url }}" class="button">Start</a></li>
+     	</ul>
+	</div>
+</article>
+{% endfor %}
 ```
 
 Contributing
