@@ -47,3 +47,6 @@ articles_no_index = create_generator("test_data/articles_no_index", attrgetter("
 articles_with_index = create_generator(
     "test_data/articles_with_index", attrgetter("date")
 )
+articles_with_index_over_10 = create_generator(
+    "test_data/articles_with_index_over_10", lambda x: x.series["index"]
+)

@@ -27,7 +27,7 @@ def aggregate_series(generator):
 
         if "series" in article.metadata:
             article_entry = {
-                "index": article.metadata.get("series_index", None),
+                "index": int(article.metadata.get("series_index", 0)),
                 "date": article.metadata["date"],
                 "content": article,
             }
@@ -35,10 +35,10 @@ def aggregate_series(generator):
             series[article.metadata["series"]].append(article_entry)
 
     for series_name, series_articles in series.items():
-        forced_order_articles = [i for i in series_articles if i["index"] is not None]
+        forced_order_articles = [i for i in series_articles if i["index"] != 0]
         forced_order_articles.sort(key=itemgetter("index"))
 
-        date_order_articles = [i for i in series_articles if i["index"] is None]
+        date_order_articles = [i for i in series_articles if i["index"] == 0]
         date_order_articles.sort(key=itemgetter("date"))
 
         all_articles = forced_order_articles + date_order_articles
