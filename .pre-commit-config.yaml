@@ -17,17 +17,17 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/psf/black
-    rev: 19.10b0
+    rev: 21.4b2
     hooks:
       - id: black
 
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.0
+  - repo: https://github.com/PyCQA/flake8
+    rev: 3.9.1
     hooks:
       - id: flake8
         args: [--max-line-length=88]
 
   - repo: https://github.com/PyCQA/isort
-    rev: 5.7.0
+    rev: 5.8.0
     hooks:
       - id: isort
