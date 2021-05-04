@@ -26,6 +26,7 @@ repos:
     hooks:
       - id: flake8
         args: [--max-line-length=88]
+        language_version: python3
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.8.0
