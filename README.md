@@ -22,13 +22,19 @@ In order to mark reStructuredText-formatted posts as part of a series, use the `
 :series:  NAME_OF_THIS_SERIES
 ```
 
+Or, for Markdown-formatted content:
+
+```
+Series: NAME_OF_THIS_SERIES
+```
+
 The plugin collects all articles belonging to the same series and provides series-related variables that you can use in your template.
 
 ## Indexing
 
 By default, articles in a series are ordered by date and then automatically numbered.
 
-If you want to force a given order, specify `series_index` in the article metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered by date.
+If you want to force a given order, specify `:series_index:` (reST) or `series_index:` (Markdown) in the article metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered by date.
 
 The plugin provides the following variables to your templates:
 
@@ -68,9 +74,6 @@ The plugin also adds the key `series` to the global context, which is a dictiona
 	</a>
 	<div class="card-body">
     	<a href="{{ article.url }}"><h3 class="card-title">{{ series_name }}</h3></a>
-     	{% if article.series_info %}
-     	<p class="article-info">{{ article.series_info }}</p>
-     	{% endif %}
      	<ul class="actions">
      		<li><a href="{{ article.url }}" class="button">Start</a></li>
      	</ul>
@@ -78,8 +81,6 @@ The plugin also adds the key `series` to the global context, which is a dictiona
 </article>
 {% endfor %}
 ```
-
-Please note that in this example I used `article.series_info` which is a custom metadata and is not provided by the plugin.
 
 ## Contributing
 
