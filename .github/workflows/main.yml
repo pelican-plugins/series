@@ -14,13 +14,13 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Set up Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: pip-cache
         with:
           path: ~/.cache/pip
@@ -30,7 +30,7 @@ jobs:
       - name: Install Poetry
         run: python -m pip install poetry
       - name: Set up Poetry cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: poetry-cache
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -48,17 +48,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Validate links in Markdown files
         uses: JustinBeckwith/linkinator-action@v1
         with:
           retry: true
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
       - name: Set Poetry cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: poetry-cache
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -83,9 +83,9 @@ jobs:
     if: ${{ github.ref=='refs/heads/main' && github.event_name!='pull_request' }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
       - name: Check release
