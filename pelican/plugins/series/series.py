@@ -24,7 +24,6 @@ def aggregate_series(generator):
     # and collects the 'series' metadata, if present.
     # The 'series_index' metadata is also stored, if specified
     for article in generator.articles:
-
         if "series" in article.metadata:
             article_entry = {
                 "index": int(article.metadata.get("series_index", 0)),
