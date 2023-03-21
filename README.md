@@ -1,7 +1,7 @@
 Series: A Plugin for Pelican
 ============================
 
-[![Build Status](https://img.shields.io/github/workflow/status/pelican-plugins/series/build)](https://github.com/pelican-plugins/series/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/series/main.yml?branch=main)](https://github.com/pelican-plugins/series/actions)
 [![PyPI Version](https://img.shields.io/pypi/v/pelican-series)](https://pypi.org/project/pelican-series/)
 ![License](https://img.shields.io/pypi/l/pelican-series?color=blue)
 
