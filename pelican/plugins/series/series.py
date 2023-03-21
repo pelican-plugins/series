@@ -14,6 +14,7 @@ from operator import itemgetter
 
 from pelican import signals
 
+ordered_articles_all = {}
 
 def aggregate_series(generator):
     generator.context["series"] = {}
@@ -63,7 +64,14 @@ def aggregate_series(generator):
                 article.series["next"] = None
 
         generator.context["series"][series_name] = ordered_articles
+        ordered_articles_all[series_name] = ordered_articles
+
+
+def onGeneratorsFinalized(generators):
+    for generator in generators:
+        generator.context["series"] = ordered_articles_all
 
 
 def register():
     signals.article_generator_finalized.connect(aggregate_series)
+    signals.all_generators_finalized.connect(onGeneratorsFinalized)
