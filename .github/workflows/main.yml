@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,8 +25,6 @@ jobs:
         with:
           path: ~/.cache/pip
           key: pip-${{ hashFiles('**/pyproject.toml') }}
-      - name: Upgrade Pip
-        run: python -m pip install --upgrade pip
       - name: Install Poetry
         run: python -m pip install poetry
       - name: Set up Poetry cache
@@ -36,9 +34,7 @@ jobs:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
-        run: |
-          poetry run pip install --upgrade pip
-          poetry install
+        run: poetry install
       - name: Run tests
         run: poetry run invoke tests
 
@@ -63,16 +59,12 @@ jobs:
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: poetry-${{ hashFiles('**/poetry.lock') }}
-      - name: Upgrade Pip
-        run: python -m pip install --upgrade pip
       - name: Install Poetry
         run: python -m pip install poetry
       - name: Install dependencies
-        run: |
-          poetry run pip install --upgrade pip
-          poetry install
+        run: poetry install --no-interaction
       - name: Run linters
-        run: poetry run invoke lint
+        run: poetry run invoke lint --diff
 
 
   deploy:
