@@ -16,6 +16,7 @@ from pelican import signals
 
 ordered_articles_all = {}
 
+
 def aggregate_series(generator):
     generator.context["series"] = {}
 
