@@ -14,6 +14,17 @@ This plugin can be installed via:
 
     python -m pip install pelican-series
 
+You can then load the plugin by adding it to the `PLUGINS` section of
+`pelicanconf.py`:
+
+``` python
+PLUGINS = [
+    '...',
+    'pelican.plugins.series',
+    '...',
+]
+```
+
 Usage
 -----
 
