@@ -15,6 +15,39 @@ from operator import itemgetter
 from pelican import signals
 
 ordered_articles_all = {}
+ordered_pages_all = {}
+
+
+def generate_serie(series_name, series_items, sort_key):
+    forced_order_items = [i for i in series_items if i["index"] != 0]
+    forced_order_items.sort(key=itemgetter("index"))
+
+    custom_order_items = [i for i in series_items if i["index"] == 0]
+    custom_order_items.sort(key=itemgetter(sort_key))
+
+    all_items = forced_order_items + custom_order_items
+    ordered_items = [i["content"] for i in all_items]
+
+    for index, page in enumerate(ordered_items):
+        page.series = {
+            "name": series_name,
+            "index": index + 1,
+            "all": ordered_items,
+            "all_previous": ordered_items[0:index],
+            "all_next": ordered_items[index + 1 :],
+        }
+
+        if index > 0:
+            page.series["previous"] = ordered_items[index - 1]
+        else:
+            page.series["previous"] = None
+
+        try:
+            page.series["next"] = ordered_items[index + 1]
+        except IndexError:
+            page.series["next"] = None
+
+    return ordered_items
 
 
 def aggregate_series(generator):
@@ -35,44 +68,41 @@ def aggregate_series(generator):
 
             series[article.metadata["series"]].append(article_entry)
 
-    for series_name, series_articles in series.items():
-        forced_order_articles = [i for i in series_articles if i["index"] != 0]
-        forced_order_articles.sort(key=itemgetter("index"))
+    for series_name, series_items in series.items():
+        ordered_items = generate_serie(series_name, series_items, "date")
 
-        date_order_articles = [i for i in series_articles if i["index"] == 0]
-        date_order_articles.sort(key=itemgetter("date"))
+        generator.context["series"][series_name] = ordered_items
+        ordered_articles_all[series_name] = ordered_items
 
-        all_articles = forced_order_articles + date_order_articles
-        ordered_articles = [i["content"] for i in all_articles]
 
-        for index, article in enumerate(ordered_articles):
-            article.series = {
-                "name": series_name,
-                "index": index + 1,
-                "all": ordered_articles,
-                "all_previous": ordered_articles[0:index],
-                "all_next": ordered_articles[index + 1 :],
+def aggregate_series_pages(generator):
+    generator.context["series"] = {}
+
+    series = defaultdict(list)
+
+    for page in generator.pages:
+        if "series" in page.metadata:
+            page_entry = {
+                "index": int(page.metadata.get("series_index", 0)),
+                "content": page,
             }
 
-            if index > 0:
-                article.series["previous"] = ordered_articles[index - 1]
-            else:
-                article.series["previous"] = None
+            series[page.metadata["series"]].append(page_entry)
 
-            try:
-                article.series["next"] = ordered_articles[index + 1]
-            except IndexError:
-                article.series["next"] = None
+    for series_name, series_items in series.items():
+        ordered_items = generate_serie(series_name, series_items, "title")
 
-        generator.context["series"][series_name] = ordered_articles
-        ordered_articles_all[series_name] = ordered_articles
+        generator.context["series"][series_name] = ordered_items
+        ordered_pages_all[series_name] = ordered_items
 
 
 def onGeneratorsFinalized(generators):
     for generator in generators:
-        generator.context["series"] = ordered_articles_all
+        generator.context["article_series"] = ordered_articles_all
+        generator.context["page_series"] = ordered_pages_all
 
 
 def register():
     signals.article_generator_finalized.connect(aggregate_series)
+    signals.page_generator_finalized.connect(aggregate_series_pages)
     signals.all_generators_finalized.connect(onGeneratorsFinalized)

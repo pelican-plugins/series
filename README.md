@@ -27,14 +27,21 @@ Or, for Markdown-formatted content:
 
     Series: NAME_OF_THIS_SERIES
 
-The plugin collects all articles belonging to the same series and provides series-related variables that you can use in your template.
+The plugin collects all articles or pages belonging to the same series and provides series-related variables that you can use in your template.
+
+Articles and pages
+------------------
+
+This plugin works both with articles and pages. As Pelican uses the specific variable `article` for article templates and `page` for page templates it is complicated to give examples that work for both cases. In the following documentation all example will mention `article.` (e.g. `article.series`, `article.title`) but the code works in the same way with `page` (e.g. `page.series`, `page.title`).
+
+Article series and page series are created separately, so even if an article and a page have the same series they won't appear together.
 
 Indexing
 --------
 
-By default, articles in a series are ordered by date and then automatically numbered.
+By default, articles in a series are ordered by date and then automatically numbered. Pages in a series are ordered by title and automatically numbered.
 
-If you want to force a given order, specify `:series_index:` (reST) or `series_index:` (Markdown) in the article metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered by date.
+If you want to force a given order, specify `:series_index:` (reST) or `series_index:` (Markdown) in the article metadata, starting from 1. All articles with this enforced index are put at the beginning of the series and ordered according to the index itself. All the remaining articles come after them, ordered with the default ordering (date for articles and title for pages).
 
 The plugin provides the following variables to your templates:
 
@@ -64,7 +71,9 @@ For example:
 Global Context
 --------------
 
-The plugin also adds the key `series` to the global context, which is a dictionary of all series names (as keys) and articles (as values). You can use that to list all the series of articles in your site, for example
+**Warning**: in version 3 the global key `series` has been renamed to `article_series` to differentiate it from the new global key `page_series`.
+
+The plugin also adds the keys `article_series` and `page_series` to the global context. They are dictionaries of all series names (as keys) and items (as values). You can use that to list all the series in your site, for example
 
 ```html+jinja
 {% for series_name, series_articles in series.items() %}
@@ -82,6 +91,8 @@ The plugin also adds the key `series` to the global context, which is a dictiona
 </article>
 {% endfor %}
 ```
+
+As it is not possible to create pages from plugins you can leverage it to create a page for a specific series, even though you have to hard code the name of the series in the template.
 
 Contributing
 ------------
