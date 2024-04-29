@@ -5,22 +5,25 @@ on: [push, pull_request]
 env:
   PYTEST_ADDOPTS: "--color=yes"
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    name: Test - ${{ matrix.python-version }}
+    name: Test - Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Set up Pip cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: pip-cache
         with:
           path: ~/.cache/pip
@@ -28,7 +31,7 @@ jobs:
       - name: Install Poetry
         run: python -m pip install poetry
       - name: Set up Poetry cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: poetry-cache
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -44,17 +47,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Validate links in Markdown files
         uses: JustinBeckwith/linkinator-action@v1
         with:
           retry: true
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: "3.10"
       - name: Set Poetry cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: poetry-cache
         with:
           path: ~/.cache/pypoetry/virtualenvs
@@ -72,29 +75,36 @@ jobs:
     environment: Deployment
     needs: [test, lint]
     runs-on: ubuntu-latest
-    if: ${{ github.ref=='refs/heads/main' && github.event_name!='pull_request' }}
+    if: github.ref=='refs/heads/main' && github.event_name!='pull_request'
+
+    permissions:
+      contents: write
+      id-token: write
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: "3.10"
+
       - name: Check release
         id: check_release
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install poetry githubrelease httpx==0.16.1 autopub
-          echo "##[set-output name=release;]$(autopub check)"
+          python -m pip install autopub[github]
+          autopub check
+
       - name: Publish
-        if: ${{ steps.check_release.outputs.release=='' }}
+        if: ${{ steps.check_release.outputs.autopub_release=='true' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git remote set-url origin https://$GITHUB_TOKEN@github.com/${{ github.repository }}
           autopub prepare
-          poetry build
           autopub commit
+          autopub build
           autopub githubrelease
-          poetry publish -u __token__ -p $PYPI_PASSWORD
+
+      - name: Upload package to PyPI
+        if: ${{ steps.check_release.outputs.autopub_release=='true' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
