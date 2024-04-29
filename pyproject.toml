@@ -31,6 +31,8 @@ classifiers = [
 python = ">=3.8.1,<4.0"
 pelican = ">=4.5"
 markdown = {version = ">=3.2", optional = true}
+# Avoid PyPI/Poetry problem: https://github.com/python-poetry/poetry/issues/9293
+docutils = "!=0.21.post1"
 
 [tool.poetry.dev-dependencies]
 black = "^23.0"
