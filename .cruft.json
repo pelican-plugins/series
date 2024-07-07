@@ -1,0 +1,27 @@
+{
+  "template": "https://github.com/getpelican/cookiecutter-pelican-plugin",
+  "commit": "b4b9b4f83b624cfd7728a3f1527d272be28ee916",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "plugin_name": "Series",
+      "repo_name": "series",
+      "package_name": "series",
+      "distribution_name": "pelican-series",
+      "version": "3.0.0",
+      "description": "Series is a Pelican plugin that joins multiple posts into a series",
+      "authors": "{name = \"Leonardo Giordani\", email = \"giordani.leonardo@gmail.com\"}, {name = \"Justin Mayer\", email = \"entroP@gmail.com\"}",
+      "keywords": "\"pelican\", \"plugin\", \"series\", \"multiple\"",
+      "readme": "README.md",
+      "contributing": "CONTRIBUTING.md",
+      "license": "GNU Affero General Public License v3|AGPL-3.0",
+      "repo_url": "https://github.com/pelican-plugins/series",
+      "dev_status": "5 - Production/Stable",
+      "tests_exist": true,
+      "python_version": ">=3.8.1,<4.0",
+      "pelican_version": ">=4.5",
+      "_template": "https://github.com/getpelican/cookiecutter-pelican-plugin"
+    }
+  },
+  "directory": null
+}
