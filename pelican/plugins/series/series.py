@@ -1,6 +1,4 @@
-"""
-Series
-======
+"""Series plugin for Pelican.
 
 This plugin extends the original series plugin
 by FELD Boris <lothiraldan@gmail.com>
