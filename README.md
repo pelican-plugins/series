@@ -3,6 +3,7 @@ Series: A Plugin for Pelican
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/pelican-plugins/series/main.yml?branch=main)](https://github.com/pelican-plugins/series/actions)
 [![PyPI Version](https://img.shields.io/pypi/v/pelican-series)](https://pypi.org/project/pelican-series/)
+[![Downloads](https://img.shields.io/pypi/dm/pelican-series)](https://pypi.org/project/pelican-series/)
 ![License](https://img.shields.io/pypi/l/pelican-series?color=blue)
 
 Series is a Pelican plugin that joins multiple posts into a series. Globally, it provides a list of all the series, and for each article it provides a list of all articles in the same series and links to the next and previous articles in the series.
