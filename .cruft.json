@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/getpelican/cookiecutter-pelican-plugin",
-  "commit": "b4b9b4f83b624cfd7728a3f1527d272be28ee916",
+  "commit": "c3e12ed61d60be88e8cae2488f6edbfab8085ba4",
   "checkout": null,
   "context": {
     "cookiecutter": {

@@ -15,11 +15,11 @@ classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -29,19 +29,18 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pelican-plugins/series"
+"Homepage" = "https://github.com/pelican-plugins/series"
 "Issue Tracker" = "https://github.com/pelican-plugins/series/issues"
-Funding = "https://donate.getpelican.com/"
+"Changelog" = "https://github.com/pelican-plugins/series/blob/main/CHANGELOG.md"
+"Funding" = "https://donate.getpelican.com/"
 
 [project.optional-dependencies]
 markdown = ["markdown>=3.4"]
 
-[tool.pdm]
-
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 lint = [
     "invoke>=2.2",
-    "ruff>=0.5.0,<0.6.0"
+    "ruff>=0.7.2,<0.8.0",
 ]
 test = [
     "markdown>=3.4",
