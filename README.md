@@ -77,7 +77,7 @@ Global Context
 The plugin also adds the keys `article_series` and `page_series` to the global context. They are dictionaries of all series names (as keys) and items (as values). You can use that to list all the series in your site, for example
 
 ```html+jinja
-{% for series_name, series_articles in series.items() %}
+{% for series_name, series_articles in article_series.items() %}
 {% set article = series_articles[0] %}
 <article class="card">
 	<a href="{{ article.url }}" class="image">
