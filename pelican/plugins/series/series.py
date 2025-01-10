@@ -33,6 +33,7 @@ def generate_serie(series_name, series_items, sort_key):
             "all": ordered_items,
             "all_previous": ordered_items[0:index],
             "all_next": ordered_items[index + 1 :],
+            "lang": "en",
         }
 
         if index > 0:
@@ -56,21 +57,33 @@ def aggregate_series(generator):
     # This cycles through all articles in the given generator
     # and collects the 'series' metadata, if present.
     # The 'series_index' metadata is also stored, if specified
+    translations = defaultdict(dict)
+    more = []
     for article in generator.articles:
+        for trans in article.translations:
+            more.append(trans)
+    for article in generator.articles + more:
         if "series" in article.metadata:
             article_entry = {
                 "index": int(article.metadata.get("series_index", 0)),
                 "date": article.metadata["date"],
                 "content": article,
+                "lang": article.metadata.get("lang", generator.context['DEFAULT_LANG']),
             }
 
             series[article.metadata["series"]].append(article_entry)
-
     for series_name, series_items in series.items():
-        ordered_items = generate_serie(series_name, series_items, "date")
+        translations = defaultdict(list)
+        for item in series_items:
+            translations[item["lang"]].append(item)
+        default_language_series_items = []
+        for lang, series in translations.items():
+            ordered_items = generate_serie(series_name, series, "date")
+            if lang == generator.context['DEFAULT_LANG']:
+                default_language_series_items = ordered_items
 
-        generator.context["series"][series_name] = ordered_items
-        ordered_articles_all[series_name] = ordered_items
+        generator.context["series"][series_name] = default_language_series_items
+        ordered_articles_all[series_name] = default_language_series_items
 
 
 def aggregate_series_pages(generator):
