@@ -27,7 +27,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: true
           cache-dependency-path: ./pyproject.toml
-          version: "2.20.0"
 
       - name: Install dependencies
         run: pdm install
@@ -52,7 +51,6 @@ jobs:
         uses: pdm-project/setup-pdm@v4
         with:
           python-version: "3.10"
-          version: "2.20.0"
 
       - name: Install dependencies
         run: pdm install
