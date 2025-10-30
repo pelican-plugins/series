@@ -18,7 +18,7 @@
       "repo_url": "https://github.com/pelican-plugins/series",
       "dev_status": "5 - Production/Stable",
       "tests_exist": true,
-      "python_version": ">=3.10,<4.0",
+      "python_version": ">=3.10",
       "pelican_version": ">=4.5",
       "_template": "https://github.com/getpelican/cookiecutter-pelican-plugin",
       "_commit": "d683335f82b19e1ed2c92abf4aa6d07678e5d273"
