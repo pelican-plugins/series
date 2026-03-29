@@ -50,3 +50,6 @@ articles_with_index = create_generator(
 articles_with_index_over_10 = create_generator(
     "test_data/articles_with_index_over_10", lambda x: x.series["index"]
 )
+articles_with_draft = create_generator(
+    "test_data/articles_with_draft", attrgetter("date")
+)
