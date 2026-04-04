@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+3.1.1 - 2026-04-04
+------------------
+
+Fix #31 - Series breaks on draft articles
+
+Contributed by [Leonardo Giordani](https://github.com/lgiordani) via [PR #43](https://github.com/pelican-plugins/series/pull/43/)
+
+
 3.1.0 - 2025-10-30
 ------------------
 
