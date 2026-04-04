@@ -58,11 +58,15 @@ def aggregate_series(generator):
     # and collects the 'series' metadata, if present.
     # The 'series_index' metadata is also stored, if specified
     translations = defaultdict(dict)
-    more = []
-    for article in generator.articles:
-        for trans in article.translations:
-            more.append(trans)
-    for article in generator.articles + more:
+    all_articles = (
+        generator.articles
+        + generator.translations
+        + getattr(generator, "drafts", [])
+        + getattr(generator, "drafts_translations", [])
+        + getattr(generator, "hidden_articles", [])
+        + getattr(generator, "hidden_translations", [])
+    )
+    for article in all_articles:
         if "series" in article.metadata:
             article_entry = {
                 "index": int(article.metadata.get("series_index", 0)),
